@@ -158,6 +158,11 @@ if __name__ == '__main__':
   #                   help="")
   (options, args) = parser.parse_args()
 
+  if not len(args):
+    print "Must specify a name for the new level!"
+    parser.print_usage()
+    sys.exit(1)
+    
   options.groundheight = 64
   options.layers = get_int("Number of Hollow Layers")
   options.thickness = get_int("Layer block thickness")
@@ -168,9 +173,7 @@ if __name__ == '__main__':
   - of {thickness} thickness
   - with {air} headroom""".format(layers=options.layers, thickness=options.thickness,air=options.headroom)
 
-  if not len(args):
-    print "Must specify a name for the new level!"
-    sys.exit(1)
+
 
   worldpath = os.path.abspath(args[0])
   worldname = os.path.basename(worldpath)
