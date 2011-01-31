@@ -112,14 +112,9 @@ def Create_LevelDat(filename):
   level.tags.append(data)
   level.write_file(filename)
 
-  # # Or the auto-way
-  # blank_leveldat = 'CgAACgAERGF0YQMABlNwYXduWAAAAAADAAZTcGF3blkAAABAAwAGU3Bhd25aAAAAAAQACkxhc3RQbGF5ZWQAAAAATQ6XfwQAClJhbmRvbVNlZWQAAAAAAAAAKgQAClNpemVPbkRpc2sAAAAAAAAAAAQABFRpbWUAAAAAAAAAAAAA'
-  # buff = base64.b64decode(blank_leveldat)
-  # gzfile = GzipFile(filename, 'wb')
-  # gzfile.write(buff)
-  # gzfile.close()
 
 def FillChunk(chunk):
+  """Creates the block data for a new chunk, based on program options"""
   H = options.groundheight
   # Lots of Stone
   chunk.Blocks[:,:,:H] = 1
@@ -139,9 +134,6 @@ def FillChunk(chunk):
   for i in range(H-layerstep, 1, -layerstep)[:options.layers]:
     # Hollow out the air from here upwards
     chunk.Blocks[:,:,i:i+options.headroom] = 0
-  # # Hollow out every other layer
-  # for layer in range(62, 1, -3):
-  #   chunk.Blocks[:,:,layer+1:layer+3] = 0
 
   # Make 'direction' columns of cobblestone at the chunk corners
   # chunk.Blocks[0:2,0,:H] = 4
@@ -151,6 +143,9 @@ def FillChunk(chunk):
 
   # Make the bottom level bedrock
   chunk.Blocks[:,:,0] =  7
+  # This flag looks like it should control the existence of ore, trees, etc,
+  # but doesn't actually seem to do anything (It looks like anything next to a
+  # freshly generated chunk is automatically populated with such things)
   # chunk.TerrainPopulated = 1
   # chunk.root_tag["Level"]["LastUpdate"].value = 1
   chunk.chunkChanged()
