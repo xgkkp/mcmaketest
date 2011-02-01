@@ -23,9 +23,6 @@ Reqires:
 
 from pymclevel import mclevel
 import nbt
-import base64
-
-from gzip import GzipFile
 
 import sys, os
 
@@ -34,6 +31,7 @@ from optparse import OptionParser
 
 
 def get_int(question, default=0):
+  """Ask the user for an integer"""
   print question + "?",
   #if default != 0:
   print "[{default}]".format(default=default),
