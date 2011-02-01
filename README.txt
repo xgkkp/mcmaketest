@@ -13,9 +13,6 @@ addition to basic tools in the players inventory.
 If you specify hollow layers, glass ceiling windows are created for automatic
 daylight lighting.
 
-There is currently a bug whereby saving and reloading inside minecraft causes
-the player data to be lost (but the world the same).
-
 .. image:: minecraft_testlevel.jpg
 
 Usage
@@ -47,17 +44,4 @@ pymclevel_
       For most of the heavy lifting; object-based access
       to chunk creation and alteration, and especially the lighting
       
-NBT_:       
-      Because I haven't yet changed the script to use the pymclevel nbt reader, which
-      seems a little more simplistic
-
 .. _pymclevel: https://github.com/codewarrior0/pymclevel
-.. _NBT: https://github.com/twoolie/NBT
-
-Known Bugs
-----------
-
-- For some reason, the world loads inside minecraft fine, but when you save and reload all
-  the player data is lost. I assume this is some weird behaviour because I have set up the player structure
-  incorrectly, but have been unable to diagnose it as of yet.
-- I get a deprecation warning in the NBT module at the moment, though my copy may be out of date

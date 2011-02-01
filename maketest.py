@@ -11,14 +11,8 @@ addition to basic tools in the players inventory.
 If you specify hollow layers, glass ceiling windows are created for automatic
 daylight lighting.
 
-There is currently a bug whereby saving and reloading inside minecraft causes
-the player data to be lost (but the world the same).
-
 Reqires:
   pymclevel: https://github.com/codewarrior0/pymclevel
-  NBT:       https://github.com/twoolie/NBT
-       (because I haven't yet changed it to use the pymclevel nbt reader, which
-        is a little more simplistic)
 """
 
 from pymclevel import mclevel

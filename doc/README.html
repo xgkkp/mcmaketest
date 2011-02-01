@@ -330,8 +330,6 @@ pymclevel &quot;Creative in a box&quot; schematic is created at the spawn locati
 addition to basic tools in the players inventory.</p>
 <p>If you specify hollow layers, glass ceiling windows are created for automatic
 daylight lighting.</p>
-<p>There is currently a bug whereby saving and reloading inside minecraft causes
-the player data to be lost (but the world the same).</p>
 <img alt="minecraft_testlevel.jpg" src="minecraft_testlevel.jpg" />
 <div class="section" id="usage">
 <h1>Usage</h1>
@@ -362,19 +360,7 @@ $
 <dt><a class="reference external" href="https://github.com/codewarrior0/pymclevel">pymclevel</a></dt>
 <dd>For most of the heavy lifting; object-based access
 to chunk creation and alteration, and especially the lighting</dd>
-<dt><a class="reference external" href="https://github.com/twoolie/NBT">NBT</a>:</dt>
-<dd>Because I haven't yet changed the script to use the pymclevel nbt reader, which
-seems a little more simplistic</dd>
 </dl>
-</div>
-<div class="section" id="known-bugs">
-<h1>Known Bugs</h1>
-<ul class="simple">
-<li>For some reason, the world loads inside minecraft fine, but when you save and reload all
-the player data is lost. I assume this is some weird behaviour because I have set up the player structure
-incorrectly, but have been unable to diagnose it as of yet.</li>
-<li>I get a deprecation warning in the NBT module at the moment, though my copy may be out of date</li>
-</ul>
 </div>
 </div>
 </body>
