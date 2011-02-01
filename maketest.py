@@ -41,6 +41,7 @@ def get_int(question, default=0):
     return default
 
 def PlayerTag(level=None):
+  """Build the player tag in level.dat"""
   # currently only populates player inventory
   # no real support for this in mclevel
   inventory = level.root_tag['Data']['Player']['Inventory']
@@ -53,6 +54,7 @@ def PlayerTag(level=None):
 
 
 def Itemstack(item, slot, count=1):
+  """Creates and returns the TAG_Compound structure for an inventory stack"""
   stack = mclevel.TAG_Compound()
   stack.name = ''
   stack["id"] = mclevel.TAG_Short(item)
