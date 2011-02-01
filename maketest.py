@@ -22,7 +22,6 @@ Reqires:
 """
 
 from pymclevel import mclevel
-import nbt
 
 import sys, os
 
@@ -41,74 +40,35 @@ def get_int(question, default=0):
   except:
     return default
 
-def PlayerTag():
-  player = nbt.TAG_Compound()
-  player.name = "Player"
-  # Rest of the player data
-  position = nbt.TAG_List(name="Pos", type=nbt.TAG_Double)
-  position.tags.extend([nbt.TAG_Double(0.5), nbt.TAG_Double(options.groundheight+2), nbt.TAG_Double(0.5)])
-  player.tags.append(position)
-  motion = nbt.TAG_List(name="Motion", type=nbt.TAG_Double)
-  motion.tags.extend([nbt.TAG_Double(0.), nbt.TAG_Double(0.), nbt.TAG_Double(0.)])
-  player.tags.append(motion)
-  rotation = nbt.TAG_List(name="Rotation", type=nbt.TAG_Float)
-  rotation.tags.extend([nbt.TAG_Float(0.), nbt.TAG_Float(0.)])
-  player.tags.append(rotation)
-
-  player.tags.append(nbt.TAG_Byte(name="OnGround", value=1))
-  player.tags.append(nbt.TAG_Short(name="Air", value=300))
-  player.tags.append(nbt.TAG_Short(name="HurtTime", value=0))
-  player.tags.append(nbt.TAG_Short(name="AttackTime", value=0))
-  player.tags.append(nbt.TAG_Short(name="DeathTime", value=0))
-  player.tags.append(nbt.TAG_Short(name="Health", value=20))
-  player.tags.append(nbt.TAG_Short(name="Fire", value=-20))
-  player.tags.append(nbt.TAG_Int(name="Score", value=0))
-  player.tags.append(nbt.TAG_Long(name="Dimension", value=0))
-
-  player.tags.append(nbt.TAG_Float(name="FallDistance", value=0.0))
-
-  inventory = nbt.TAG_List(name="Inventory", type=nbt.TAG_Compound)
-  inventory.tags.append(Itemstack(278, slot=8))
-  inventory.tags.append(Itemstack(50, slot=0, count=-1)) # Torches
-  inventory.tags.append(Itemstack(1, slot=1, count=-1))  # Stone
-  inventory.tags.append(Itemstack(3, slot=2, count=-1))  # Dirt
-  inventory.tags.append(Itemstack(345, slot=35, count=1))  # Compass
+def PlayerTag(level=None):
+  # currently only populates player inventory
+  # no real support for this in mclevel
+  inventory = level.root_tag['Data']['Player']['Inventory']
+  inventory.append(Itemstack(278, slot=8))
+  inventory.append(Itemstack(50, slot=0, count=-1)) # Torches
+  inventory.append(Itemstack(1, slot=1, count=-1))  # Stone
+  inventory.append(Itemstack(3, slot=2, count=-1))  # Dirt
+  inventory.append(Itemstack(345, slot=35, count=1))  # Compass
 
 
-
-  player.tags.append(inventory)
-
-  return player
 
 def Itemstack(item, slot, count=1):
-  stack = nbt.TAG_Compound()
+  stack = mclevel.TAG_Compound()
   stack.name = ''
-  stack.tags.append(nbt.TAG_Short(name="id", value=item))
-  stack.tags.append(nbt.TAG_Byte(name="Slot", value=slot))
-  stack.tags.append(nbt.TAG_Byte(name="Count", value=count))
-  stack.tags.append(nbt.TAG_Short(name="Damage", value=0))
+  stack["id"] = mclevel.TAG_Short(item)
+  stack["Slot"] = mclevel.TAG_Byte(slot)
+  stack["Count"] = mclevel.TAG_Byte(count)
+  stack["Damage"] = mclevel.TAG_Short(0)
   return stack
 
 def Create_LevelDat(filename):
   "Creates a blank level.dat suitable for initializing fresh worlds"
-  # Make a blank NBT
-  level = nbt.NBTFile()
-  level.name = ''
-  # data compound
-  data = nbt.TAG_Compound()
-  data.name = "Data"
-  data.tags.append(nbt.TAG_Int(name="SpawnX", value=0))
-  data.tags.append(nbt.TAG_Int(name="SpawnY", value=64))
-  data.tags.append(nbt.TAG_Int(name="SpawnZ", value=0))
-  data.tags.append(nbt.TAG_Long(name="LastPlayed", value=time.time()))
-  data.tags.append(nbt.TAG_Long(name="RandomSeed", value=42))
-  data.tags.append(nbt.TAG_Long(name="SizeOnDisk", value=0))
-  data.tags.append(nbt.TAG_Long(name="Time", value=0))
-
-  data.tags.append(PlayerTag())
-
-  level.tags.append(data)
-  level.write_file(filename)
+  level = mclevel.MCInfdevOldLevel(filename, create=True, random_seed=42)
+  level.setPlayerPosition((0, 67, 0))
+  level.setPlayerSpawnPosition((0, 64, 0))
+  PlayerTag(level)
+  level.saveInPlace()
+  
 
 
 def FillChunk(chunk):
@@ -187,7 +147,7 @@ if __name__ == '__main__':
   # Create the world folder and level.dat
   os.makedirs(worldpath)
   
-  Create_LevelDat(worldleveldat)
+  Create_LevelDat(worldpath)
 
   # Open the world
   world = mclevel.fromFile(worldpath)
